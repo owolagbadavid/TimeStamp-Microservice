@@ -50,4 +50,22 @@ else{
   res.json({"unix":curDate.valueOf(),"utc":curDate.toHTTP()})
 }
 }
-).post()
+).post(
+  function(req, res){
+    if(!req.params.date){
+     var curDate = DateTime.now();
+    } 
+      else if(!(DateTime.fromJSDate(new Date(req.params.date))).isValid){
+        var curDate = DateTime.fromMillis(Number(req.params.date))
+      }
+      else{
+      var curDate = DateTime.fromJSDate(new Date(req.params.date))
+      }
+    if(!curDate.isValid){
+      res.json({"error":"Invalid Date"})
+    }
+    else{
+      res.json({"unix":curDate.valueOf(),"utc":curDate.toHTTP()})
+    }
+    }
+)
